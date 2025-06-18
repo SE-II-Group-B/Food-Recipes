@@ -1,28 +1,49 @@
 package view;
 
 import model.Model;
-import controller.CreateRecipeController;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import controller.AllRecipeController;
 import entity.Recipe;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-public class AllRecipeView<T extends Recipe> {
-	private TableView<T> table;
+public class AllRecipeView {
+	private TableView<Recipe> table;
 	
-	public void show(Stage stage, CreateRecipeController controller) {
+	public void show(Stage stage, AllRecipeController controller) {
 		table = new TableView<>();
 		
 		table.setEditable(false);
 		
-		TableColumn<T, String> nameCol = new TableColumn<>("Recipe Name");
-		nameCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-		TableColumn<T, String> imageCol = new TableColumn<>("Image");
-		imageCol.setCellValueFactory(cellData -> cellData.getValue().imagePathProperty());
-		TableColumn<T, Integer> servingsCol = new TableColumn<>("Servings");
-		servingsCol.setCellValueFactory(cellData -> cellData.getValue().servingsProperty().asObject());
+		TableColumn<Recipe, String> nameCol = new TableColumn<>("Recipe Name");
+		nameCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
+		nameCol.setPrefWidth(200);
 		
-		table.getColumns().addAll(nameCol, imageCol, servingsCol);
+		TableColumn<Recipe, String> imageCol = new TableColumn<>("Image");
+		imageCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getImagePath()));
+		imageCol.setPrefWidth(200);
+
+		TableColumn<Recipe, Integer> servingsCol = new TableColumn<>("Servings");
+		servingsCol.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getServings()));
+		servingsCol.setPrefWidth(100);
 		
+		
+		
+		table.getColumns().addAll(imageCol, nameCol, servingsCol);
+		ObservableList<Recipe> recipes = FXCollections.observableArrayList(Model.getAllRecipes());
+	    table.setItems(recipes);
+	    
+	    VBox root = new VBox(table);
+	    Scene scene = new Scene(root, 600, 400);
+	    stage.setScene(scene);
+	    stage.setTitle("Recipe Table");
+	    stage.show();
 	}
 	
 	

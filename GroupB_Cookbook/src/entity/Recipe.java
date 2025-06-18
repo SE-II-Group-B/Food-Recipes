@@ -1,7 +1,6 @@
 package entity;
 
 import java.util.List;
-import javafx.beans.property.StringProperty;
 
 public class Recipe {
 	private String name;
@@ -38,15 +37,4 @@ public class Recipe {
 		return imagePath;
 	}
 	
-	public StringProperty imagePathProperty() {
-		return imagePath;
-	}
-	
-	public StringProperty nameProperty() {
-		return name;
-	}
-	
-	public StringProperty servingsProperty() {
-		return String.valueOf(servings);
-	}
 }

@@ -10,7 +10,11 @@ public class Model {
 		System.out.println("Saving recipe: " + recipe.getName());
 	}
 	
-	public void getAllRecipes() {
-		
+	public static List<Recipe> getAllRecipes() {
+		List<Recipe> recipes = List.of(
+			new Recipe("Pasta", "pasta.jpg", 4, List.of("Pasta: 200g", "Tomato Sauce: 100ml"), "Boil pasta and add sauce."),
+			new Recipe("Salad", "salad.jpg", 2, List.of("Lettuce: 100g", "Tomato: 50g"), "Mix ingredients.")
+		);
+		return recipes;
 	}
 }
