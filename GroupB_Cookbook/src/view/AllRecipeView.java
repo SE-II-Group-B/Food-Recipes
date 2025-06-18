@@ -3,7 +3,7 @@ package view;
 import model.Model;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import controller.CreateRecipeController;
+import controller.AllRecipeController;
 import entity.Recipe;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -16,7 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class AllRecipeView {
 	private TableView<Recipe> table;
 	
-	public void show(Stage stage, CreateRecipeController controller) {
+	public void show(Stage stage, AllRecipeController controller) {
 		table = new TableView<>();
 		
 		table.setEditable(false);
@@ -32,6 +32,8 @@ public class AllRecipeView {
 		TableColumn<Recipe, Integer> servingsCol = new TableColumn<>("Servings");
 		servingsCol.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getServings()));
 		servingsCol.setPrefWidth(100);
+		
+		
 		
 		table.getColumns().addAll(imageCol, nameCol, servingsCol);
 		ObservableList<Recipe> recipes = FXCollections.observableArrayList(Model.getAllRecipes());

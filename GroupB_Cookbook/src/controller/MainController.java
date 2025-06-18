@@ -17,20 +17,23 @@ public class MainController {
         if (createRecipeStage == null || !createRecipeStage.isShowing()) {
             createRecipeStage = new Stage();
             new CreateRecipeView().show(createRecipeStage, new CreateRecipeController());
-            createRecipeStage.setOnHidden(ev -> createRecipeStage = null);
         } else {
             flashWindow(createRecipeStage);
         }
     }
 
     public void onViewRecipesClicked() {
-        new AllRecipeView().show(primaryStage, new CreateRecipeController());
+    	if (allRecipeStage == null || !allRecipeStage.isShowing()) {
+    		allRecipeStage = new Stage();
+    		new AllRecipeView().show(allRecipeStage, new AllRecipeController());
+    		} else {
+			flashWindow(allRecipeStage);
+		}
         
     }
 
     public void onSearchClicked(String keyword) {
         System.out.println("Search for: " + keyword);
-        // 可扩展搜索功能
     }
 
     private void flashWindow(Stage stage) {
