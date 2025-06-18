@@ -7,17 +7,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import controller.CreateRecipeController;
-
+import controller.MainController;
 
 public class MainView extends Application {
     private Stage primaryStage;
     private BorderPane root;
-    private Stage createRecipeStage; 
+    private MainController controller;
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        this.controller = new MainController(primaryStage);
         this.root = new BorderPane();
 
         showMainPage();
@@ -49,35 +49,8 @@ public class MainView extends Application {
 
         root.setCenter(centerBox);
 
-        createButton.setOnAction(e -> {
-            if (createRecipeStage == null || !createRecipeStage.isShowing()) {
-                createRecipeStage = new Stage();
-                new CreateRecipeView().show(createRecipeStage, new CreateRecipeController());
-                createRecipeStage.setOnHidden(ev -> createRecipeStage = null);
-            } else {
-                flashWindow(createRecipeStage);
-            }
-        });
-
-        viewButton.setOnAction(e -> {
-            System.out.println("View Recipes Clicked");
-        });
-
-        searchButton.setOnAction(e -> {
-            String keyword = searchField.getText().trim();
-            System.out.println("Search for: " + keyword);
-        });
-    }
-    
-    private void flashWindow(Stage stage) {
-        final String originalTitle = stage.getTitle();
-        javafx.animation.Timeline timeline = new javafx.animation.Timeline(
-            new javafx.animation.KeyFrame(javafx.util.Duration.seconds(0), ev -> stage.setTitle("** Attention **")),
-            new javafx.animation.KeyFrame(javafx.util.Duration.seconds(0.5), ev -> stage.setTitle(originalTitle))
-        );
-        timeline.setCycleCount(6);
-        timeline.play();
-        stage.toFront();
-        stage.requestFocus();
+        createButton.setOnAction(e -> controller.onCreateRecipeClicked());
+        viewButton.setOnAction(e -> controller.onViewRecipesClicked());
+        searchButton.setOnAction(e -> controller.onSearchClicked(searchField.getText().trim()));
     }
 }
