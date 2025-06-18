@@ -9,6 +9,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import controller.MainController;
 
+
 public class MainView extends Application {
     private Stage primaryStage;
     private BorderPane root;
@@ -36,7 +37,12 @@ public class MainView extends Application {
         topBar.setAlignment(Pos.CENTER_LEFT);
         topBar.setStyle("-fx-background-color: #ececec;");
         root.setTop(topBar);
-
+        
+        Label titleText = new Label("Welcome to the Digital Cookbook");
+        titleText.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333;");
+        VBox titleBox = new VBox(titleText);
+        titleBox.setAlignment(Pos.CENTER);
+        
         TextField searchField = new TextField();
         searchField.setPromptText("Enter recipe name...");
         Button searchButton = new Button("Search");
@@ -44,7 +50,7 @@ public class MainView extends Application {
         HBox searchBox = new HBox(10, searchField, searchButton);
         searchBox.setAlignment(Pos.CENTER);
 
-        VBox centerBox = new VBox(20, searchBox);
+        VBox centerBox = new VBox(15,titleText, searchBox);
         centerBox.setAlignment(Pos.CENTER);
 
         root.setCenter(centerBox);
