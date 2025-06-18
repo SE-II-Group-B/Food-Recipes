@@ -10,8 +10,10 @@ module GroupB_Cookbook {
     exports view;
     exports model;
     exports controller;
+    exports entity;
 
     opens view to javafx.fxml;
     opens model to javafx.fxml;
     opens controller to javafx.fxml;
+    opens entity to javafx.fxml;
 }

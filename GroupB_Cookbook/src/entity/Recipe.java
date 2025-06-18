@@ -35,6 +35,14 @@ public class Recipe {
 	
 	public String getImagePath() {
 		return imagePath;
+	}	
+	
+	// Clearer output
+	@Override
+	public String toString() {
+	    return new StringBuilder(name)
+	        .append(" (").append(servings).append(" servings)")
+	        .toString();
 	}
 	
 }

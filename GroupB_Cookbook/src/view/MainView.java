@@ -32,7 +32,9 @@ public class MainView extends Application {
     public void showMainPage() {
         Button createButton = new Button("Create Recipe");
         Button viewButton = new Button("View Recipes");
-        HBox topBar = new HBox(10, createButton, viewButton);
+        Button historyButton = new Button("History");
+        
+        HBox topBar = new HBox(10, createButton, viewButton, historyButton);
         topBar.setPadding(new Insets(10));
         topBar.setAlignment(Pos.CENTER_LEFT);
         topBar.setStyle("-fx-background-color: #ececec;");
@@ -57,6 +59,7 @@ public class MainView extends Application {
 
         createButton.setOnAction(e -> controller.onCreateRecipeClicked());
         viewButton.setOnAction(e -> controller.onViewRecipesClicked());
+        historyButton.setOnAction(e -> controller.onHistoryClicked());
         searchButton.setOnAction(e -> controller.onSearchClicked(searchField.getText().trim()));
     }
 }

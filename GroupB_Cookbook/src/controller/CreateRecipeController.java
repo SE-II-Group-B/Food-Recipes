@@ -5,16 +5,20 @@ import javafx.stage.Stage;
 import model.*;
 import view.CreateRecipeView;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.scene.Scene;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import java.util.List;
+import javafx.scene.control.TableView;
 import entity.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class CreateRecipeController {
+
+    private static final String RECIPE_NAME_EMPTY_WARNING = "Recipe name cannot be empty!";
+    private static final String RECIPE_SAVED_INFO = "Recipe saved!";
+    private static final String WARNING_TITLE = "Warning";
+    private static final String INFO_TITLE = "Info";
 
     /**
      * Bind UI events and initialize data for the view
@@ -22,6 +26,10 @@ public class CreateRecipeController {
      * @param view the CreateRecipeView instance
      */
     public void bindView(Stage stage, CreateRecipeView view) {
+        // Validate input parameters
+        Objects.requireNonNull(stage, "Stage cannot be null");
+        Objects.requireNonNull(view, "View cannot be null");
+        
         // Initialize the ingredients table with some empty rows
         ObservableList<Ingredient> data = FXCollections.observableArrayList(
                 new Ingredient("", ""),
@@ -42,79 +50,50 @@ public class CreateRecipeController {
         });
 
         // Save recipe button action
-        view.getSaveButton().setOnAction(e -> {
-            String title = view.getTitleField().getText().trim();
-            int servings = view.getServingsSpinner().getValue();
-            String instructions = view.getInstructionsArea().getText().trim();
-            String imagePath = ""; 
-
-            // Validate recipe name input
-            if (title.isEmpty()) {            	
-				showWarning(stage,"Recipe name cannot be empty!");
-                return;
-            }
-
-            // Collect non-empty ingredients from table
-            List<String> ingredientList = view.getTable().getItems().stream()
-                    .filter(ing -> !ing.getName().isEmpty() && !ing.getAmount().isEmpty())
-                    .map(ing -> ing.getName() + ": " + ing.getAmount())
-                    .toList();
-
-            // Create a Recipe object and save it
-            Recipe recipe = new Recipe(title, imagePath, servings, ingredientList, instructions);
-            Model.saveRecipe(recipe);
-
-            // Show info popup on successful save
-            showInfoPopup(stage, "Recipe saved!");
-            stage.close();
-        });
+        view.getSaveButton().setOnAction(e -> saveRecipe(stage, view));
     }
 
     /**
-     * Show a simple information popup window
-     * @param owner the owner stage
-     * @param message the message to show
+     * Handles the recipe saving logic
      */
-    private void showInfoPopup(Stage owner, String message) {
-        Stage popup = new Stage();
-        popup.setTitle("Info");
+    private void saveRecipe(Stage stage, CreateRecipeView view) {
+        String title = view.getTitleField().getText().trim();
+        int servings = view.getServingsSpinner().getValue();
+        String instructions = view.getInstructionsArea().getText().trim();
+        String imagePath = ""; 
 
-        Label label = new Label(message);
-        label.setStyle("-fx-font-size: 14px; -fx-padding: 10px;");
+        // Validate recipe name input
+        if (title.isBlank()) {
+            showAlert(AlertType.WARNING, WARNING_TITLE, RECIPE_NAME_EMPTY_WARNING);
+            return;
+        }
 
-        Button okButton = new Button("OK");
-        okButton.setOnAction(ev -> popup.close());
+        // Collect non-empty ingredients from table
+        List<String> ingredientList = view.getTable().getItems().stream()
+                .filter(ing -> !ing.getName().isBlank() && !ing.getAmount().isBlank())
+                .map(ing -> String.format("%s: %s", ing.getName(), ing.getAmount()))
+                .collect(Collectors.toList());
 
-        VBox layout = new VBox(10, label, okButton);
-        layout.setAlignment(Pos.CENTER);
-        layout.setPadding(new Insets(15));
+        // Create a Recipe object and save it
+        Recipe recipe = new Recipe(title, imagePath, servings, ingredientList, instructions);
+        Model.saveRecipe(recipe);
 
-        Scene scene = new Scene(layout, 200, 100);
-        popup.setScene(scene);
-        popup.initOwner(owner);
-        popup.showAndWait();
+        // Show info popup on successful save
+        showAlert(AlertType.INFORMATION, INFO_TITLE, RECIPE_SAVED_INFO);
+        stage.close();
     }
-    
+
     /**
-	 * Show a warning alert dialog
-	 * @param message the warning message to display
-	 */
-    private void showWarning(Stage stage,String message) {
-	    Stage dialog = new Stage();
-	    VBox box = new VBox(10);
-	    box.setPadding(new Insets(15));
-	    box.setAlignment(Pos.CENTER);
-
-	    Label label = new Label(message);
-	    Button okButton = new Button("OK");
-	    okButton.setOnAction(e -> dialog.close());
-
-	    box.getChildren().addAll(label, okButton);
-
-	    Scene scene = new Scene(box, 300, 100);
-	    dialog.setScene(scene);
-	    dialog.setTitle("Warning");
-	    dialog.initOwner(stage);  
-	    dialog.showAndWait();
-	}
+     * Shows a standardized alert dialog
+     * @param type the alert type (e.g., WARNING, INFORMATION)
+     * @param title the dialog title
+     * @param message the content message
+     */
+    private void showAlert(AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

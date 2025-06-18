@@ -3,11 +3,13 @@ package controller;
 import javafx.stage.Stage;
 import view.AllRecipeView;
 import view.CreateRecipeView;
+import view.HistoryView;
 
 public class MainController {
     private Stage primaryStage;
     private Stage createRecipeStage;
     private Stage allRecipeStage;
+    private Stage historyStage; 
 
     public MainController(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -23,13 +25,21 @@ public class MainController {
     }
 
     public void onViewRecipesClicked() {
-    	if (allRecipeStage == null || !allRecipeStage.isShowing()) {
-    		allRecipeStage = new Stage();
-    		new AllRecipeView().show(allRecipeStage, new AllRecipeController());
-    		} else {
-			flashWindow(allRecipeStage);
-		}
-        
+        if (allRecipeStage == null || !allRecipeStage.isShowing()) {
+            allRecipeStage = new Stage();
+            new AllRecipeView().show(allRecipeStage, new AllRecipeController());
+        } else {
+            flashWindow(allRecipeStage);
+        }
+    }
+    
+    public void onHistoryClicked() {
+        if (historyStage == null || !historyStage.isShowing()) {
+            historyStage = new Stage();
+            new HistoryView().show(historyStage, new HistoryController());
+        } else {
+            flashWindow(historyStage);
+        }
     }
 
     public void onSearchClicked(String keyword) {
