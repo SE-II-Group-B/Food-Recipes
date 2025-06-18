@@ -2,6 +2,7 @@ package model;
 
 import entity.Recipe;
 import entity.Ingredient;
+import java.util.List;
 
 public class Model {
 	
@@ -10,6 +11,6 @@ public class Model {
 	}
 	
 	public void getAllRecipes() {
-		// Logic to retrieve all recipes
+		
 	}
 }
