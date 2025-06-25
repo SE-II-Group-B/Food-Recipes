@@ -1,6 +1,7 @@
 package view;
 
 import model.Model;
+import javafx.scene.image.ImageView;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import controller.HistoryController;
@@ -23,20 +24,30 @@ public class HistoryView {
         imageCol.setCellValueFactory(cellData -> 
             new ReadOnlyStringWrapper(cellData.getValue().getImagePath()));
         imageCol.setPrefWidth(200);
+
+        imageCol.setCellFactory(column -> new TableCell<Recipe, String>() {
+            @Override
+            protected void updateItem(String imagePath, boolean empty) {
+                super.updateItem(imagePath, empty);
+
+                if (empty || imagePath == null) {
+                    setGraphic(null);
+                } else {
+                    ImageView imageView = Model.getImageViewFromPath(imagePath);
+                    setGraphic(imageView);
+                }
+            }
+        });
+
         
         TableColumn<Recipe, String> nameCol = new TableColumn<>("Recipe Name");
         nameCol.setCellValueFactory(cellData -> 
             new ReadOnlyStringWrapper(cellData.getValue().getName()));
         nameCol.setPrefWidth(200);
+    
         
-        TableColumn<Recipe, Integer> servingsCol = new TableColumn<>("Servings");
-        servingsCol.setCellValueFactory(cellData -> 
-            new ReadOnlyObjectWrapper<>(cellData.getValue().getServings()));
-        servingsCol.setPrefWidth(100);
+        table.getColumns().addAll(imageCol, nameCol);
         
-        table.getColumns().addAll(imageCol, nameCol, servingsCol);
-        
-        // get data (tbd)
         ObservableList<Recipe> recipes = FXCollections.observableArrayList();
         table.setItems(recipes);
         

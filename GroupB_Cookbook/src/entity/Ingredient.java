@@ -5,34 +5,25 @@ import javafx.beans.property.StringProperty;
 
 public class Ingredient {
     private final StringProperty name;
-    private final StringProperty amount;
+    private final int amount;
+    private final StringProperty unit;
 
-    public Ingredient(String name, String amount) {
+    public Ingredient(String name, int amount, String unit) {
         this.name = new SimpleStringProperty(name);
-        this.amount = new SimpleStringProperty(amount);
+        this.amount = amount;
+        this.unit = new SimpleStringProperty(unit);
     }
 
-    public String getName() {
-        return name.get();
-    }
+	public StringProperty getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name.set(name);
-    }
+	public int getAmount() {
+		return amount;
+	}
 
-    public StringProperty nameProperty() {
-        return name;
-    }
-
-    public String getAmount() {
-        return amount.get();
-    }
-
-    public void setAmount(String amount) {
-        this.amount.set(amount);
-    }
-
-    public StringProperty amountProperty() {
-        return amount;
-    }
+	public StringProperty getUnit() {
+		return unit;
+	}
+    
 }
