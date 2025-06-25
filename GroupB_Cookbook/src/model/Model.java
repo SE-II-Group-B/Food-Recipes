@@ -1,20 +1,59 @@
 package model;
 
 import entity.Recipe;
+import database.RecipeDAO;
 import entity.Ingredient;
 import java.util.List;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Model {
 	
-	public static void saveRecipe(Recipe recipe) {
-		System.out.println("Saving recipe: " + recipe.getName());
+	List<Recipe> recipes = RecipeDAO.getAllRecipes();
+	
+	public static int getRecipeCount() {
+		return RecipeDAO.getAllRecipes().size();
+	}
+
+	public static ImageView getImageViewFromPath(String imagePath) {
+	    ImageView imageView = new ImageView();
+	    try {
+	        Image image = new Image(imagePath);
+	        imageView.setImage(image);
+	        imageView.setFitWidth(50);    
+	        imageView.setFitHeight(50);   
+	        imageView.setPreserveRatio(true); 
+	    } catch (Exception e) {
+	        imageView.setImage(null);
+	    }
+	    return imageView;
 	}
 	
 	public static List<Recipe> getAllRecipes() {
-		List<Recipe> recipes = List.of(
-			new Recipe("Pasta", "pasta.jpg", 4, List.of("Pasta: 200g", "Tomato Sauce: 100ml"), "Boil pasta and add sauce."),
-			new Recipe("Salad", "salad.jpg", 2, List.of("Lettuce: 100g", "Tomato: 50g"), "Mix ingredients.")
-		);
-		return recipes;
+		return RecipeDAO.getAllRecipes();
 	}
+	
+	public static void saveRecipe(Recipe recipe) {
+		RecipeDAO.insertRecipe(recipe);
+		System.out.println("Recipe saved: " + recipe.getName());
+	}
+	
+	public static void insertRecipe(Recipe recipe) {
+		RecipeDAO.insertRecipe(recipe);
+		System.out.println("Inserted recipe: " + recipe.getName());
+	}
+	
+	public static void updateRecipe(Recipe recipe) {
+		RecipeDAO.updateRecipe(recipe);
+		System.out.println("Updated recipe: " + recipe.getName());
+	}
+	
+	public static void deleteRecipe(int recipeId) {
+		RecipeDAO.deleteRecipe(recipeId);
+		System.out.println("Deleted recipe with ID: " + recipeId);
+	}
+	
+	
+
+
 }

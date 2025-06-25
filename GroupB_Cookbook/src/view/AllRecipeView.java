@@ -1,6 +1,7 @@
 package view;
 
 import model.Model;
+import database.RecipeDAO;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import controller.AllRecipeController;
@@ -28,14 +29,8 @@ public class AllRecipeView {
 		TableColumn<Recipe, String> imageCol = new TableColumn<>("Image");
 		imageCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getImagePath()));
 		imageCol.setPrefWidth(200);
-
-		TableColumn<Recipe, Integer> servingsCol = new TableColumn<>("Servings");
-		servingsCol.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getServings()));
-		servingsCol.setPrefWidth(100);
 		
-		
-		
-		table.getColumns().addAll(imageCol, nameCol, servingsCol);
+		table.getColumns().addAll(imageCol, nameCol);
 		ObservableList<Recipe> recipes = FXCollections.observableArrayList(Model.getAllRecipes());
 	    table.setItems(recipes);
 	    

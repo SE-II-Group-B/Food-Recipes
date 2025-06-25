@@ -1,17 +1,19 @@
 package controller;
 
-import javafx.collections.*;
 import javafx.stage.Stage;
 import model.*;
 import view.CreateRecipeView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import entity.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class CreateRecipeController {
 
@@ -22,73 +24,85 @@ public class CreateRecipeController {
 
     /**
      * Bind UI events and initialize data for the view
-     * @param stage the primary stage
-     * @param view the CreateRecipeView instance
      */
     public void bindView(Stage stage, CreateRecipeView view) {
-        // Validate input parameters
-        Objects.requireNonNull(stage, "Stage cannot be null");
-        Objects.requireNonNull(view, "View cannot be null");
-        
-        // Initialize the ingredients table with some empty rows
-        ObservableList<Ingredient> data = FXCollections.observableArrayList(
-                new Ingredient("", ""),
-                new Ingredient("", ""),
-                new Ingredient("", "")
-        );
-        view.getTable().setItems(data);
+        Objects.requireNonNull(stage);
+        Objects.requireNonNull(view);
 
-        // Add row button action
-        view.getAddRowBtn().setOnAction(e -> view.getTable().getItems().add(new Ingredient("", "")));
+        view.addIngredientRow();
+        view.addIngredientRow();
+        view.addStepRow();
 
-        // Delete selected row button action
-        view.getDelRowBtn().setOnAction(e -> {
-            Ingredient selected = view.getTable().getSelectionModel().getSelectedItem();
-            if (selected != null) {
-                view.getTable().getItems().remove(selected);
-            }
-        });
+        view.getAddIngredientBtn().setOnAction(e -> view.addIngredientRow());
+        view.getAddStepBtn().setOnAction(e -> view.addStepRow());
 
-        // Save recipe button action
         view.getSaveButton().setOnAction(e -> saveRecipe(stage, view));
     }
 
     /**
-     * Handles the recipe saving logic
+     * save recipe
      */
     private void saveRecipe(Stage stage, CreateRecipeView view) {
         String title = view.getTitleField().getText().trim();
-        int servings = view.getServingsSpinner().getValue();
-        String instructions = view.getInstructionsArea().getText().trim();
-        String imagePath = ""; 
+        String imagePath = "";
 
-        // Validate recipe name input
         if (title.isBlank()) {
             showAlert(AlertType.WARNING, WARNING_TITLE, RECIPE_NAME_EMPTY_WARNING);
             return;
         }
 
-        // Collect non-empty ingredients from table
-        List<String> ingredientList = view.getTable().getItems().stream()
-                .filter(ing -> !ing.getName().isBlank() && !ing.getAmount().isBlank())
-                .map(ing -> String.format("%s: %s", ing.getName(), ing.getAmount()))
-                .collect(Collectors.toList());
+        List<Ingredient> ingredients = extractIngredients(view.getIngredientListBox());
+        List<String> steps = extractSteps(view.getStepsListBox());
+        String description = view.getDescriptionBox().getText().trim();
+        
+        Recipe recipe = new Recipe(Model.getRecipeCount(), title, description, imagePath, steps, ingredients);
 
-        // Create a Recipe object and save it
-        Recipe recipe = new Recipe(title, imagePath, servings, ingredientList, instructions);
         Model.saveRecipe(recipe);
 
-        // Show info popup on successful save
         showAlert(AlertType.INFORMATION, INFO_TITLE, RECIPE_SAVED_INFO);
         stage.close();
     }
 
-    /**
-     * Shows a standardized alert dialog
-     * @param type the alert type (e.g., WARNING, INFORMATION)
-     * @param title the dialog title
-     * @param message the content message
-     */
+    private List<Ingredient> extractIngredients(VBox ingredientListBox) {
+        List<Ingredient> ingredients = new ArrayList<>();
+        for (var node : ingredientListBox.getChildren()) {
+            if (node instanceof HBox row) {
+                TextField nameField = (TextField) row.getChildren().get(0);
+                TextField amountField = (TextField) row.getChildren().get(1);
+                TextField unitField = (TextField) row.getChildren().get(2);
+
+                String name = nameField.getText().trim();
+                String amountText = amountField.getText().trim();
+                String unit = unitField.getText().trim();
+
+                if (!name.isEmpty() && !amountText.isEmpty()) {
+                    try {
+                        int amount = Integer.parseInt(amountText);
+                        ingredients.add(new Ingredient(name, amount, unit));
+                    } catch (NumberFormatException e) {
+                        System.err.println("Invalid number for amount: " + amountText);
+                    }
+                }
+            }
+        }
+        return ingredients;
+    }
+
+
+    private List<String> extractSteps(VBox stepsListBox) {
+        List<String> steps = new ArrayList<>();
+        for (var node : stepsListBox.getChildren()) {
+            if (node instanceof HBox row) {
+                TextField stepField = (TextField) row.getChildren().get(0);
+                String text = stepField.getText().trim();
+                if (!text.isEmpty()) {
+                    steps.add(text);
+                }
+            }
+        }
+        return steps;
+    }
+
     private void showAlert(AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

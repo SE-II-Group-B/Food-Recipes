@@ -14,11 +14,14 @@ public class CreateRecipeView {
 
     private TableView<Ingredient> table;
     private TextField titleField;
-    private Spinner<Integer> servingsSpinner;
-    private TextArea instructionsArea;
-    private Button addRowBtn;
-    private Button delRowBtn;
+    private TextArea descriptionBox;
     private Button saveButton;
+    private VBox ingredientListBox;
+    private Button addIngredientBtn;
+    private VBox stepsListBox;
+    private Button addStepBtn;
+
+
 
     /**
      * Show the Create Recipe window and setup the UI
@@ -33,85 +36,110 @@ public class CreateRecipeView {
         titleField.setMaxWidth(300);
         HBox titleBox = new HBox(10, titleLabel, titleField);
         titleBox.setAlignment(Pos.CENTER);
+        
+        // Recipe description label and text area
+        Label descriptionLabel = new Label("Description:");
+        descriptionBox = new TextArea();
+        descriptionBox.setPromptText("Enter recipe description here");
+        descriptionBox.setWrapText(true);
+        descriptionBox.setMaxWidth(300);
+        descriptionBox.setMaxHeight(100);
 
-        // TableView setup for ingredients list
-        table = new TableView<>();
-        table.setEditable(true);
-        table.setPrefHeight(200);
-        table.setMaxHeight(300);
-        table.setMaxWidth(300);
-        table.setRowFactory(tv -> new TableRow<Ingredient>() {
-            @Override
-            protected void updateItem(Ingredient item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setStyle("-fx-background-color: white;"); 
-                }
-                else if (!item.getName().isEmpty() && !item.getAmount().isEmpty()){
-                    setStyle("-fx-background-color: #e6f0ff;"); 
-                }
-            }
-        });
+        // Ingredients label
+        Label ingredientsLabel = new Label("Ingredients:");
+        ingredientListBox = new VBox(5);
+        ingredientListBox.setPadding(new Insets(5));
+        ingredientListBox.setAlignment(Pos.TOP_CENTER);
 
+        addIngredientRow();
 
+        // 添加按钮 "+" 添加新行
+        addIngredientBtn = new Button("+");
+        addIngredientBtn.setOnAction(e -> addIngredientRow());
+        HBox addBtnBox = new HBox(addIngredientBtn);
+        addBtnBox.setAlignment(Pos.CENTER);
+        addBtnBox.setPadding(new Insets(5));
 
-        // Ingredient name column
-        TableColumn<Ingredient, String> nameCol = new TableColumn<>("Ingredient");
-        nameCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        nameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        nameCol.setPrefWidth(180);
+        // 整个配料部分容器
+        VBox ingredientSection = new VBox(5, ingredientsLabel, ingredientListBox, addBtnBox);
+        ingredientSection.setAlignment(Pos.CENTER);
+        ingredientSection.setPadding(new Insets(5));
 
-        // Ingredient amount column
-        TableColumn<Ingredient, String> amountCol = new TableColumn<>("Amount");
-        amountCol.setCellValueFactory(cellData -> cellData.getValue().amountProperty());
-        amountCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        amountCol.setPrefWidth(120);
+        Label instructionsLabel = new Label("Steps:");
+        stepsListBox = new VBox(5);
+        stepsListBox.setPadding(new Insets(5));
+        stepsListBox.setAlignment(Pos.TOP_CENTER);
 
-        table.getColumns().addAll(nameCol, amountCol);
+        addStepRow();
+        
+        addStepBtn = new Button("+");
+        addStepBtn.setOnAction(e -> addStepRow());
 
-        // Buttons for adding and deleting rows
-        addRowBtn = new Button("Add Row");
-        delRowBtn = new Button("Delete Selected");
-        HBox btnBox = new HBox(10, addRowBtn, delRowBtn);
-        btnBox.setPadding(new Insets(10));
-        btnBox.setAlignment(Pos.CENTER);
+        HBox addStepBtnBox = new HBox(addStepBtn);
+        addStepBtnBox.setAlignment(Pos.CENTER);
+        addStepBtnBox.setPadding(new Insets(5));
 
-        // Servings label and spinner
-        Label servingsLabel = new Label("Servings:");
-        servingsSpinner = new Spinner<>(1, 20, 1);
-        servingsSpinner.setEditable(true);
-        HBox servingsBox = new HBox(10, servingsLabel, servingsSpinner);
-        servingsBox.setAlignment(Pos.CENTER);
-
-        // Instructions label and text area
-        Label instructionsLabel = new Label("Instructions:");
-        instructionsArea = new TextArea();
-        instructionsArea.setPromptText("Describe the cooking steps here");
-        instructionsArea.setPrefRowCount(6);
+        VBox stepsSection = new VBox(5, instructionsLabel, stepsListBox, addStepBtnBox);
+        stepsSection.setAlignment(Pos.CENTER);
+        stepsSection.setPadding(new Insets(10));
 
         // Save recipe button
         saveButton = new Button("Save Recipe");
 
-        // Main layout container
         VBox root = new VBox(10,
                 titleBox,
-                table,
-                btnBox,
-                servingsBox,
-                instructionsLabel,
-                instructionsArea,
+                descriptionBox,
+                ingredientSection,
+                stepsSection,
                 saveButton
         );
+
+
         root.setPadding(new Insets(15));
         root.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(root, 400, 500);
+        Scene scene = new Scene(root, 600, 500);
         stage.setScene(scene);
         stage.setTitle("Create Recipe");
         stage.show();
 
         controller.bindView(stage, this);
     }
+    
+    public void addIngredientRow() {
+        TextField nameField = new TextField();
+        nameField.setPromptText("Name");
+        nameField.setPrefWidth(120);
+
+        TextField amountField = new TextField();
+        amountField.setPromptText("Amount");
+        amountField.setPrefWidth(80);
+
+        TextField unitField = new TextField();
+        unitField.setPromptText("Unit");
+        unitField.setPrefWidth(80);
+
+        Button deleteBtn = new Button("-");
+        deleteBtn.setOnAction(e -> ingredientListBox.getChildren().remove(deleteBtn.getParent()));
+
+        HBox row = new HBox(10, nameField, amountField, unitField, deleteBtn);
+        row.setAlignment(Pos.CENTER);
+        ingredientListBox.getChildren().add(row);
+    }
+    
+    public void addStepRow() {
+        TextField stepField = new TextField();
+        stepField.setPromptText("Describe this step");
+        stepField.setPrefWidth(280);
+
+        Button deleteBtn = new Button("-");
+        deleteBtn.setOnAction(e -> stepsListBox.getChildren().remove(deleteBtn.getParent()));
+
+        HBox stepRow = new HBox(10, stepField, deleteBtn);
+        stepRow.setAlignment(Pos.CENTER_LEFT);
+        stepsListBox.getChildren().add(stepRow);
+    }
+
 
     public TableView<Ingredient> getTable() {
 		return table;
@@ -121,24 +149,28 @@ public class CreateRecipeView {
 		return titleField;
 	}
 
-	public Spinner<Integer> getServingsSpinner() {
-		return servingsSpinner;
-	}
-
-	public TextArea getInstructionsArea() {
-		return instructionsArea;
-	}
-
-	public Button getAddRowBtn() {
-		return addRowBtn;
-	}
-
-	public Button getDelRowBtn() {
-		return delRowBtn;
+	public TextArea getDescriptionBox() {
+		return descriptionBox;
 	}
 
 	public Button getSaveButton() {
 		return saveButton;
+	}
+	
+	public VBox getIngredientListBox() {
+	    return ingredientListBox;
+	}
+
+	public VBox getStepsListBox() {
+	    return stepsListBox;
+	}
+
+	public Button getAddStepBtn() {
+	    return addStepBtn;
+	}
+	
+	public Button getAddIngredientBtn() {
+	    return addIngredientBtn;
 	}
 	
 }
