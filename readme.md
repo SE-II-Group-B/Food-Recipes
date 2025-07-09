@@ -48,7 +48,7 @@ Each recipe includes:
 3. Add JavaFX libraries to your classpath (or use a supported IDE)
 4. Add the mysql-connector.jar which is involved in the project folder to the build path as external JAR  
 5. Start up your database service at 3306 port with username "root" and password "12345678"( or you can modify the database access value in model.recipeDAO.java )  
-6. In your database software, run the given sql file to insert all data.  
+6. In your database software, open and run the given sql file to insert all data.  
 6. Run `Main.java` in main package  
 
 ## Example Usage
