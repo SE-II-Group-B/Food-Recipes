@@ -11,6 +11,9 @@ import view.MainView;
 import java.io.File;
 
 /**
+ * 
+ * Authorized and written by SE II Group B
+
  * Controller for managing all recipe-related navigation and actions.
  */
 public class AllRecipeController {

@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 import java.util.List;
 
 /**
+ *
+ * Authorized and written by SE II Group B 
+ *
  * EditRecipeView provides the user interface for editing an existing recipe.
  * It allows modification of basic information, image, preparation time,
  * ingredients, and cooking steps.

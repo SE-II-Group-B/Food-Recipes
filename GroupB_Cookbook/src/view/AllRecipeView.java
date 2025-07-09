@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 import model.RecipeDAO;
 
 /**
+ *
+ * Authorized and written by SE II Group B
+ *  
  * Displays a list of all recipes in a table view.
  * Provides options to view details (on double-click), delete a selected recipe, or go back to main view.
  */

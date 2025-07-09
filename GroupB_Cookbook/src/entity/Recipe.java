@@ -1,5 +1,10 @@
 package entity;
 
+/**
+ * Authorized and written by SE II Group B
+ *  
+ **/
+
 public class Recipe {
     private int recipeId;
     private String recipeName;

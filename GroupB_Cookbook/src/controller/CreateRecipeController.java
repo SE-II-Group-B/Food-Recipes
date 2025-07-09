@@ -16,6 +16,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Authorized and written by SE II Group B
+ *  
+ **/
+
 public class CreateRecipeController {
 
     private static final int MAX_PREP_TIME = 9999;

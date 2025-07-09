@@ -7,6 +7,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Authorized and written by SE II Group B
+ *  
+ **/
+
 public class RecipeDAO {
 	
 	private static final String DB_URL = "jdbc:mysql://localhost:3306/cookbook";

@@ -16,6 +16,11 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+/**
+ * Authorized and written by SE II Group B
+ *  
+ **/
+
 public class EditRecipeController {
     private final EditRecipeView view;
     private final RecipeDAO recipeDAO = new RecipeDAO();

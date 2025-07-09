@@ -5,6 +5,11 @@ import model.RecipeDAO;
 
 import java.util.List;
 
+/**
+ * Authorized and written by SE II Group B
+ *  
+ **/
+
 public class SearchController {
     
 		/**

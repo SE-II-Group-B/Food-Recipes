@@ -17,6 +17,9 @@ import java.io.File;
 import java.util.List;
 
 /**
+ * 
+ * Authorized and written by SE II Group B
+ * 
  * View for displaying detailed information about a single recipe.
  */
 public class CurrentRecipeView extends BorderPane {

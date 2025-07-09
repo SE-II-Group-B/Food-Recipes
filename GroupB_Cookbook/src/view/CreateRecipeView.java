@@ -13,6 +13,9 @@ import javafx.scene.text.FontWeight;
 import java.io.File;
 
 /**
+ *
+ * Authorized and written by SE II Group B
+ *
  * CreateRecipeView is the UI layout for creating a new recipe.
  * It includes fields for recipe name, image, description, preparation time,
  * ingredients, and steps, with options to add new items dynamically.

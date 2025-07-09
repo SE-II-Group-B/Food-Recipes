@@ -11,6 +11,11 @@ import view.MainView;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Authorized and written by SE II Group B
+ *  
+ **/
+
 public class HistoryController {
 	
 	/**

@@ -11,7 +11,10 @@ import view.HistoryView;
 import view.SearchView;
 
 /**
- * Controller responsible for handling main menu navigation actions.
+ *
+ * Authorized and written by SE II Group B
+ *  
+ *Controller responsible for handling main menu navigation actions.
  */
 public class MainController {
 

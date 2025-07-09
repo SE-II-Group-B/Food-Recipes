@@ -12,6 +12,9 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 /**
+ *
+ * Authorized and written by SE II Group B
+ * 
  * HistoryView displays the user's recent recipe search history in a table.
  * It allows users to view details, export the list, clear the history,
  * or return to the main view.

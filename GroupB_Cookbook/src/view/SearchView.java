@@ -15,6 +15,9 @@ import javafx.stage.Stage;
 import java.util.List;
 
 /**
+ *
+ * Authorized and written by SE II Group B
+ * 
  * SearchView provides a UI to search for recipes by name.
  * Supports entering a keyword to perform the search, displaying results,
  * and double-clicking to open recipe details.

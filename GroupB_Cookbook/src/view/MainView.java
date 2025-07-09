@@ -11,6 +11,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
+ *
+ * Authorized and written by SE II Group B
+ *  
  * MainView is the entry screen of the cookbook application.
  * It provides navigation buttons to view all recipes, create a new recipe,
  * or view the search history. It also includes a search bar for quick access.

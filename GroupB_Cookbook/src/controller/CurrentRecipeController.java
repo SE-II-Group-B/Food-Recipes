@@ -10,8 +10,13 @@ import javafx.stage.Stage;
 import model.RecipeDAO;
 import view.CreateRecipeView;
 import view.CurrentRecipeView;
-
 import java.util.List;
+
+/**
+ * Authorized and written by SE II Group B
+ *  
+ **/
+
 
 public class CurrentRecipeController {
 

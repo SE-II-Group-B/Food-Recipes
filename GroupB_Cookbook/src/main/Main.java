@@ -1,5 +1,10 @@
 package main;
 
+/**
+ * Authorized and written by SE II Group B
+ *  
+ **/
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
