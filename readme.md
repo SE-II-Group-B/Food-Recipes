@@ -65,7 +65,7 @@ Each recipe includes:
 - The project assumes recipes are **uniquely** identified by name  
 - Search history updates only when you **search** for a recipe and **open** a recipe detail window  
 - Data persistence can be customized in the `RecipeDAO` class  
-- For many numeric value columns, it is restricted to only numeric values, no other datatype is allowed.  
+- For many numeric value columns, it is restricted to **only** numeric values, no other datatype is allowed.  
 
 ## Planned Improvements
 
